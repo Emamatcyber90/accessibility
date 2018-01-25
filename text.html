@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<body>
+<body onload="myFunction()">
 
 <form action="">
   <fieldset>
@@ -10,8 +10,18 @@
 	  <input type="text" aria-live="assertive" value="" id="assertive" />
 	  <label for="polite">aria-live polite</label>
 	  <input type="text" aria-live="polite" value="" id="polite" />
+	  <label for="no_aria">no aria</label>
+	  <input type="text" value="" id="no_aria" />
+	  <input type="text" value="" aria-live="assertive" id="accessibility" />
 	</div>
   </fieldset>
 </form>
+<script>
+function myFunction() {
+    document.getElementById("no_aria").addEventListener('keyup', e => {
+	document.getElementById("accessibility").value = e.key;
+});
+}
+</script>
 </body>
 </html>
