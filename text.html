@@ -10,17 +10,25 @@
 	  <input type="text" aria-live="assertive" value="" id="assertive" />
 	  <label for="polite">aria-live polite</label>
 	  <input type="text" aria-live="polite" value="" id="polite" />
-	  <label for="no_aria">no aria</label>
+	  <label for="no_aria">no aria to visible</label>
 	  <input type="text" value="" id="no_aria" />
 	  <input type="text" value="" aria-live="assertive" id="accessibility" />
+	  <label for="no_aria_hidden">no aria to invisible</label>
+	  <input type="text" value="" id="no_aria_hidden" />
+	  <input type="hidden" value="" aria-live="assertive" id="accessibility-hidden" />
 	</div>
   </fieldset>
 </form>
 <script>
 function myFunction() {
     document.getElementById("no_aria").addEventListener('keyup', e => {
-	document.getElementById("accessibility").value = e.key;
-});
+		document.getElementById("accessibility").value = e.key;
+		}
+	);
+	document.getElementById("no_aria_hidden").addEventListener('keyup', e => {
+		document.getElementById("accessibility-hidden").value = e.key;
+		}
+	);
 }
 </script>
 </body>
