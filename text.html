@@ -15,14 +15,29 @@
 	  <input type="text" value="" aria-live="assertive" id="accessibility" />
 	  <label for="no_aria_hidden">no aria to invisible</label>
 	  <input type="text" value="" id="no_aria_hidden" />
-	  <div style="overflow: hidden; width:0; height:0;" aria-live="assertive" id="accessibility-hidden"></div>
 	</div>
   </fieldset>
 </form>
 <script>
 function myFunction() {
+	var div = document.createElement("div");
+	div.setAttribute('aria-live', 'assertive');
+	div.style.width = '0';
+	div.style.height = '0';
+	div.style.overflow = 'hidden';
+	div.id = 'accessibility-hidden';
+	document.body.appendChild(div);
+
     document.getElementById("no_aria").addEventListener('keyup', e => {
-		document.getElementById("accessibility").value = e.key;
+		const index = e.currentTarget.selectionStart;
+		let value = '';
+		let len = e.currentTarget.value.length;
+		if (len > index) {
+			value = e.currentTarget.value[index];
+		} else if (len > 0) {
+			value = e.currentTarget.value[len - 1];
+		}
+		document.getElementById("accessibility-hidden").innerHTML = value;
 		}
 	);
 	document.getElementById("no_aria_hidden").addEventListener('keyup', e => {
