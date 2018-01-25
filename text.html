@@ -15,7 +15,7 @@
 	  <input type="text" value="" aria-live="assertive" id="accessibility" />
 	  <label for="no_aria_hidden">no aria to invisible</label>
 	  <input type="text" value="" id="no_aria_hidden" />
-	  <input type="hidden" value="" aria-live="assertive" id="accessibility-hidden" />
+	  <div style="visibility: hidden; width:0; height:0;" aria-live="assertive" id="accessibility-hidden"></div>
 	</div>
   </fieldset>
 </form>
@@ -26,7 +26,7 @@ function myFunction() {
 		}
 	);
 	document.getElementById("no_aria_hidden").addEventListener('keyup', e => {
-		document.getElementById("accessibility-hidden").value = e.key;
+		document.getElementById("accessibility-hidden").innerHTML = e.key;
 		}
 	);
 }
