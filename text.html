@@ -14,36 +14,81 @@
 	  <input type="text" value="" id="no_aria" />
 	  <input type="text" value="" aria-live="assertive" id="accessibility" />
 	  <label for="no_aria_hidden">no aria to invisible</label>
-	  <input type="text" value="" id="no_aria_hidden" />
+	  <input type="email" value="" id="no_aria_hidden" />
 	</div>
   </fieldset>
 </form>
 <script>
 function myFunction() {
-	var div = document.createElement("div");
+	const hiddenDivId = 'skype-sisu-accessibility-hidden';
+	if (document.getElementById(hiddenDivId)) {
+		return;
+	}
+	const div = document.createElement("div");
 	div.setAttribute('aria-live', 'assertive');
+	div.setAttribute('aria-hidden', 'true');
 	div.style.width = '0';
 	div.style.height = '0';
 	div.style.overflow = 'hidden';
-	div.id = 'accessibility-hidden';
+	div.setAttribute('id', hiddenDivId);
 	document.body.appendChild(div);
+	window.addEventListener('keyup', function(e) {
+		if (e && e.target) {
+			const element = e.target;
+			if (element.tagName.toLowerCase() === 'input') {
+				const inputType = element.type;
+				if (inputType === 'text' || inputType === 'tel') {
+					const index = element.selectionStart;
+					let value = '';
+					const len = element.value ? element.value.length : 0;
+					if (len > index) {
+						const pos = index - 1 >= 0 ? index - 1 : index;
+						value = element.value[pos];
+					} else if (len > 0) {
+						value = element.value[len - 1];
+					}
+					div.innerHTML = escape(value);
+				} else if (inputType === 'email') {
+					const key = e.key;
+					if (key && key.length === 1) {
+						div.innerHTML = escape(key);
+					}
+				}
+			}
+		}
+	});
 
-    document.getElementById("no_aria").addEventListener('keyup', e => {
-		const index = e.currentTarget.selectionStart;
-		let value = '';
-		let len = e.currentTarget.value.length;
-		if (len > index) {
-			value = e.currentTarget.value[index];
-		} else if (len > 0) {
-			value = e.currentTarget.value[len - 1];
+	const inputs = document.getElementsByTagName('input');
+	const inputTextHandler = function(e) {
+		const element = e ? e.currentTarget : undefined;
+		if (element) {
+			const index = element.selectionStart;
+			let value = '';
+			let len = element.value ? element.value.length : 0;
+			if (len > index) {
+				const pos = index - 1 >= 0 ? index - 1 : index;
+				value = element.value[pos];
+			} else if (len > 0) {
+				value = element.value[len - 1];
+			}
+			div.innerHTML = escape(value);
 		}
-		document.getElementById("accessibility-hidden").innerHTML = value;
+	}
+	const inputEmailHandler = function(e) {
+		if (e) {
+			const key = e.key;
+			if (key && key.length === 1) {
+				div.innerHTML = escape(key);
+			}
 		}
-	);
-	document.getElementById("no_aria_hidden").addEventListener('keyup', e => {
-		document.getElementById("accessibility-hidden").innerHTML = e.key;
+	}
+	for (let i = 0; i < inputs.length; i++) {
+		if (inputs[i].type.toLowerCase() === 'text') {
+			inputs[i].addEventListener('keyup', inputTextHandler);
+		} else if (inputs[i].type.toLowerCase() === 'email') {
+			inputs[i].addEventListener('keyup', inputEmailHandler);
 		}
-	);
+	}
 }
 </script>
 </body>
